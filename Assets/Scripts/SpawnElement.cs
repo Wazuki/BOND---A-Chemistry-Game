@@ -90,7 +90,7 @@ public class SpawnElement : MonoBehaviour, IPointerDownHandler, IDragHandler, IE
         bool elementValid = false;
 
         //Only allow the element to be added if there are less than the max number of elements in play.
-        if(gameManager.elementsInPlay.Count < 11) //TODO - Remove the hardcoding from this line.
+        if(gameManager.elementsInPlay.Count < GameManager.MAX_ELEMENTS_IN_PLAY) 
         {
             //Find the first open free holder
             foreach(GameObject h in gameManager.elementOrbits)

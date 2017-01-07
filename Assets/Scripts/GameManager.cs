@@ -1,15 +1,16 @@
-﻿using System.Collections;
+﻿//GameManager.cs - Handles all remaining game-management functions.
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour {
-    private GameObject playfield;
+    private GameObject playfield; //Playfield objects that elements attach to.
     private GameObject elementHolderParent;
-    public List<GameObject> elementOrbits;
-    public List<GameObject> elementsInPlay;
-    private float playfieldRadius = 5;
+    public List<GameObject> elementOrbits; //Orbits of elements that spawned elements parent to.
+    public List<GameObject> elementsInPlay; //List of current elements in play.
+    private float playfieldRadius = 5; //TODO - Make this a detectable value instead of a hard coded value.
 
-    public const int MAX_ELEMENTS_IN_PLAY = 11;
+    public const int MAX_ELEMENTS_IN_PLAY = 11; //Maximum number of elements that can exist on the playfield.
 
 	// Use this for initialization
 	void Start ()
@@ -17,14 +18,14 @@ public class GameManager : MonoBehaviour {
         playfield = GameObject.Find("Playfield");
         elementHolderParent = GameObject.Find("ElementHolders");
         elementOrbits = new List<GameObject>();
-        elementsInPlay = new List<GameObject>(MAX_ELEMENTS_IN_PLAY);
+        elementsInPlay = new List<GameObject>(MAX_ELEMENTS_IN_PLAY); //Instantiate the elementsInPlay list with a maximum size equal to the max number of possible elements in play.
         InitElementHolders();
 	}
 	
 	// Update is called once per frame
 	void Update ()
     {
-        RotateElementHolders();
+        RotateElementHolders(); //Rotate the element holders (and in turn the elements attached to them)
 	}
 
     void InitElementHolders()
@@ -38,7 +39,7 @@ public class GameManager : MonoBehaviour {
         holder.transform.SetParent(elementHolderParent.transform);
         elementOrbits.Add(holder);
         
-        //Two mid element holders
+        //Two mid element holders - each at a 180 degree increment.
         for(int e = 0; e < 2; e++)
         {
             newPos.x = 0 + playfieldRadius / 2 * Mathf.Cos(Mathf.Deg2Rad * 180 * e);
@@ -50,7 +51,7 @@ public class GameManager : MonoBehaviour {
             elementOrbits.Add(newHolder);
         }
 
-        //Eight exterior element holders
+        //Eight exterior element holders - each at a 45 degree increment
         for(int e = 0; e < 8; e++)
         {
             newPos.x = 0 + playfieldRadius * Mathf.Cos(Mathf.Deg2Rad * 45 * e);
@@ -68,6 +69,7 @@ public class GameManager : MonoBehaviour {
 
     void RotateElementHolders()
     {
+        //Rotate each fo the element holders around the center of the playfield.
         foreach(GameObject e in elementOrbits)
         {
             e.transform.RotateAround(playfield.GetComponent<Renderer>().bounds.center, Vector3.forward, 10 * Time.deltaTime);
